@@ -36,8 +36,9 @@ app.get('/sayHello', (request, response) => {
 app.get('/weather', (request, response, next) => {
   // http://localhost:3001/weather?cityData=seattle
   try {
-    console.log('hi');
+    // This just shows what city the user is searching for
     let searchQuery = request.query.cityData;
+    // cityData is a searchQuery
     let city = data.find(cityData => cityData.city_name.toLowerCase() === searchQuery.toLowerCase())
 
     let dataMap = city.data.map(oneDay => new Forecast(oneDay));
@@ -62,6 +63,7 @@ class Forecast {
     this.low = day.low_temp;
   }
 }
+
 
 // LISTEN 
 
