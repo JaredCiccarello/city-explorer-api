@@ -1,14 +1,23 @@
 # city-explorer-api
 
-Name of feature: ________________________________
+Estimate of time needed to complete: 4 hours
 
-Estimate of time needed to complete: _____
+Start time: 4:30
 
-Start time: _____
+Finish time: 12:00
 
-Finish time: _____
+Actual time needed to complete: 7 1/2
 
-Actual time needed to complete: _____
+
+Name of feature: Setup your server repository
+
+Estimate of time needed to complete: 1hr
+
+Start time: 3:30
+
+Finish time: 4:30
+
+Actual time needed to complete: 1 hr
 
 # Project Name
 
