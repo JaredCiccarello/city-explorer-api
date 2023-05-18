@@ -8,16 +8,21 @@ console.log('our first server');
 // Once we use require, we must use it.
 
 // let data = require('./data/weather.json'); WE won't need these for movies!
-const express = require('express');
+
+// This is like having a toolbox.
 require('dotenv').config();
+const express = require('express');
 const cors = require('cors');
-const axios = require('axios')
+// This is different because it is requesting information not providing.
+const axios = require('axios');
 
 //USE
 
+// const express is asking express to put in our code toolbox.
 const app = express();
+// CORS - cross origin resource sharing
+// We use this if we want better security.
 app.use(cors());
-app.use(axios());
 // Is this necessary?
 
 
