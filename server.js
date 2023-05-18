@@ -35,12 +35,12 @@ const PORT = process.env.PORT || 3002;
 app.get('/weather', async (request, response, next) => {
   try {
 // In order to make this URL go to https://www.weatherbit.io/api/weather-forecast-16-day
-    let url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=5&lat=${req.query.lat}&lon=${req.query.lon}`
+    let url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=5&lat=${request.query.lat}&lon=${request.query.lon}`
     let weatherData = await axios.get(url);
 // When we get the data from weatherData.data we need to parse the strings and then THAT value is returned to weatherMap
     let weatherMap = parseWeathers(weatherData.data);
     weatherMap.then(weather => {
-      res.status(200).send(weather);
+      response.status(200).send(weather);
     })
 
   } catch (error) {
