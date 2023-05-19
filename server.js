@@ -1,29 +1,54 @@
 'use strict';
 
 console.log('our first server');
-
-
-
-//  REQUIRE
+      //  REQUIRE
 // Once we use require, we must use it.
+// In node.js we use require like we do imports
+// THESE MUST STAY AT THE TOP!
 
 // let data = require('./data/weather.json'); WE won't need these for movies!
 
 // This is like having a toolbox.
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-// This is different because it is requesting information not providing.
-const axios = require('axios');
 
-//USE
+// These two do the same thing as line 13
+// const dot = require('dotenv')
+// dot.config()
 
+// Express needs to be invoked before we use app.get 
+// Express is the framework that we use to build a server
+// Anytime we invoke a METHOD we need to use it
+// We use methods by using const app.
 // const express is asking express to put in our code toolbox.
+const express = require('express');
 const app = express();
+
+// This gives us a list of methods that can be used to help build our framework
+// app.
+
+const cors = require('cors');
 // CORS - cross origin resource sharing
 // We use this if we want better security.
-app.use(cors());
 // Is this necessary?
+app.use(cors());
+const handleGetMovies = require('./modules/Movies')
+// This creates an instance of the asynchronous function
+const handleGetWeather = require('./modules/Weather')
+
+
+// This is different because it is requesting information not providing.
+
+
+
+
+
+
+//USE
+// This invokes using the name of the variable
+app.get('/weather', handleGetWeather);
+app.get('/movies', handleGetMovies);
+
+
 
 
 //  PORT
@@ -32,84 +57,22 @@ const PORT = process.env.PORT || 3002;
 
 // ROUTES
 
-app.get('/weather', async (request, response, next) => {
-  try {
-// In order to make this URL go to https://www.weatherbit.io/api/weather-forecast-16-day
-    let url = `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=5&lat=${request.query.lat}&lon=${request.query.lon}`
-    let weatherData = await axios.get(url);
-// When we get the data from weatherData.data we need to parse the strings and then THAT value is returned to weatherMap
-    let weatherMap = parseWeathers(weatherData.data);
-    weatherMap.then(weather => {
-      response.status(200).send(weather);
-    })
-
-  } catch (error) {
-    next(error);
-  }
-});
-
-// CLASS DEMO
-app.get('/movies', async (request, response, next) => {
-  // the thing that the user is searching for:
- 
-  // let {lat, lon} = req.query.searchQuery;
-  // need the req URL from the API
-  // searchQuery -   if the user is seraching for kittens, pass that value into the URL I'm sending the API
-
-  try {
-    console.log("request querey hERE: ", request.query);
-    let city = request.query.cityName;
-    let movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}`
-    let movieData = await axios.get(movieURL);
-    let movieMap = parseMovies(movieData.data.results);
-    // console.log("HERE MOVIES: ", movieMap);
-    movieMap.then(movie => {
-      response.status(200).send(movie);
-    })
-
-  } catch (error) {
-    console.log('You lost buddy?: ', error);
-    next(error)
-  }
-});
 
 
-function parseWeathers(weatherData) {
-  try {
-    const weatherSummarize = weatherData.data.map(oneDay => {
-      return new Forecast(oneDay);
-    });
-    return Promise.resolve(weatherSummarize);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
 
 
-function parseMovies(moviesData) {
-  // console.log("movdiesDATA HERE: ", moviesData);
-  try {
-    const movieSummarize = moviesData.map(oneMovie => {
-      return new Movies(oneMovie);
-    });
-    return Promise.resolve(movieSummarize);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
+
+
+
+
+
+
 
 // Sheyna say's it works like this.
 
 
-  // let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=5&lat=${lat}&lon=${lon}`;;
-  // let photoData = await axios.get(url);
+// let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&units=I&days=5&lat=${lat}&lon=${lon}`;;
 
-  // // console.log(photoData.data.results);
-  // let picArray = photoData.data.results.map(pic => new Photo(pic));
-
-  // res.status(200).send(picArray);
-
-// });
 
   
   app.get('*', (request, response) => {
@@ -118,27 +81,12 @@ function parseMovies(moviesData) {
   
   //  CLASSES
   // We need a new class for each object array of data that we are requesting from.
-  
-  class Forecast {
-    constructor(day) {
-      this.date = day.valid_date;
-      this.description = day.weather.description;
-      this.high = day.high_temp;
-      this.low = day.low_temp;
-    }
-  }
 
-  class Movies {
-    constructor(movie) {
-      this.title = movie.original_title;
-      this.overview = movie.overview;
-      this.averageVotes = movie.vote_average;
-      this.totalVotes = movie.vote_count;
-      this.image_url = movie.poster_path;
-      this.popularity = movie.popularity;
-      this.releaseDate = movie.release_date;
-    }
-  }
+
+  // We still need error handling here
+  
+
+  
   
 
 // LISTEN 
