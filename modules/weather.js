@@ -32,7 +32,7 @@ async function getWeather(request, response, next) {
       let dataToSend = dataToGroom.map(object => {
         return new Weather(object);
       });
-      response.status(200).send(dataToSend);
+      response.status(500).send(dataToSend);
     } catch (error) {
       next(error)
 
