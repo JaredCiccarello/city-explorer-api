@@ -26,4 +26,12 @@ function weatherHandler(request, response) {
   });
 }  
 
+app.get('*', (request, response) => {
+  response.send('The thing you are looking for doesn\'t exist');
+});
+
+app.use((error, request, response, next) => {
+  response.status(500).send(error.message)
+});
+
 app.listen(process.env.PORT, () => console.log(`Server up on ${PORT}`));
