@@ -11,7 +11,7 @@ const getWeather = require('./modules/weather.js');
 const getMovies = require('./modules/movies.js');
 const app = express();
 app.use(cors());
-// const PORT = 3002 
+const PORT = process.env.PORT || 3002 
 
 app.get('/weather', getWeather);
 app.get('/movies', getMovies);
@@ -26,4 +26,12 @@ function weatherHandler(request, response) {
   });
 }  
 
-app.listen(process.env.PORT, () => console.log(`Server up on ${process.env.PORT}`));
+app.get('*', (request, response) => {
+  response.send('The thing you are looking for doesn\'t exist');
+});
+
+app.use((error, request, response, next) => {
+  response.status(500).send(error.message)
+});
+
+app.listen(process.env.PORT, () => console.log(`Server up on ${PORT}`));
